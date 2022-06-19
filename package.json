@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "tsc": "tsc",
+    "prepare": "npm run tsc",
+    "start:prod": "node build/index.js",
     "dev": "nodemon index.ts"
   },
   "keywords": [],
