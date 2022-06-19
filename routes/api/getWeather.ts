@@ -27,6 +27,12 @@ export async function getWeather(req: Request<null, null, null, RequestParams>, 
             q: city
         }
     })
+    .catch(error => {
+        return res.status(400).send({
+            message: 'something wrong',
+            error: error
+        })
+    })
 
     if (dataFromAPI.status > 400) {
         return res.status(400).send({ error: 'Wrong city name' })
