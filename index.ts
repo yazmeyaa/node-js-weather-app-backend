@@ -1,6 +1,7 @@
 import express from 'express'
 import { getWeather } from './routes/api/getWeather'
 import dotenv from 'dotenv'
+import cors from 'cors'
 
 dotenv.config()
 
@@ -11,7 +12,6 @@ async function start() {
     try {
         app.listen(PORT, () => {
             console.log('Server is started at port ', PORT)
-            console.log(process.env.WEATHER_API_KEY)
         })
     }
     catch (error) {
@@ -22,6 +22,7 @@ async function start() {
 }
 
 app.use(express.json())
+app.use(cors())
 
 app.get('/api/get_weather', getWeather)
 
