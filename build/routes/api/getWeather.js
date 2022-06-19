@@ -25,19 +25,22 @@ function getWeather(req, res) {
         if (!secretAPIkey) {
             throw new Error('WEATHER_API_KEY IS REQUIRED');
         }
-        const dataFromAPI = yield (0, axios_1.default)({
+        (0, axios_1.default)({
             method: 'GET',
             url: 'http://api.weatherapi.com/v1/current.json',
             params: {
                 key: secretAPIkey,
                 q: city
             }
+        })
+            .then(data => {
+            return res.status(200).send(data.data);
+        })
+            .catch(error => {
+            return res.status(400).send({
+                error: error
+            });
         });
-        if (dataFromAPI.status > 400) {
-            return res.status(400).send({ error: 'Wrong city name' });
-        }
-        console.log(dataFromAPI.data);
-        return res.status(200).send(dataFromAPI.data);
     });
 }
 exports.getWeather = getWeather;
