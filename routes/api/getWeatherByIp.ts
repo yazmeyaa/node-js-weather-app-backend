@@ -4,7 +4,7 @@ import { Request, Response } from 'express'
 
 export async function getWeatherByIP(req: Request, res: Response) {
     const secretAPIkey = process.env.WEATHER_API_KEY
-    const clientIPaddress = req.ip.split(':')[3]
+    const clientIPaddress = req.headers['x-forwarded-for']
 
     if (!clientIPaddress) {
         return res.status(400).send({ error: 'Where is IP?' })
