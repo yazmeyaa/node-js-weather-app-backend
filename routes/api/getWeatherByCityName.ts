@@ -5,11 +5,9 @@ interface RequestParams {
     city: string
 }
 
-export async function getWeather(req: Request<null, null, null, RequestParams>, res: Response) {
+export async function getWeatherByCityName(req: Request<null, null, null, RequestParams>, res: Response) {
     const { city } = req.query
     const secretAPIkey = process.env.WEATHER_API_KEY
-
-    console.log(city)
 
     if (!city) {
         return res.status(400).send({ error: 'city is required!' })
