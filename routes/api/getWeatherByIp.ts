@@ -6,13 +6,11 @@ export async function getWeatherByIP(req: Request, res: Response) {
     const secretAPIkey = process.env.WEATHER_API_KEY
     const clientIPaddress = req.ip.split(':')[3]
 
-    console.log(clientIPaddress, req.ip)
-
     if (!secretAPIkey) {
         throw new Error('WEATHER_API_KEY IS REQUIRED')
     }
 
-    const responseFromAPI: AxiosResponse<IWeatherResponse, null> = await axios({
+    axios({
         method: 'GET',
         url: 'http://api.weatherapi.com/v1/current.json',
         params: {
@@ -20,11 +18,11 @@ export async function getWeatherByIP(req: Request, res: Response) {
             q: clientIPaddress
         }
     })
-
-    if (responseFromAPI.status === 200) {
-        return res.status(200).send(responseFromAPI.data)
-    } else if (responseFromAPI.status > 400) {
-        return res.status(400).send('Error!')
-    }
-
+        .then(data => {
+            if (data.status > 400) {
+                return res.status(400).send(data.data)
+            } else if (data.status === 200) {
+                return res.status(200).send(data.data)
+            }
+        })
 }
