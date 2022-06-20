@@ -1,4 +1,5 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
+import { IWeatherResponse } from 'types/weatherAPIResponse'
 import { Request, Response } from 'express'
 
 export async function getWeatherByIP(req: Request, res: Response) {
@@ -11,7 +12,7 @@ export async function getWeatherByIP(req: Request, res: Response) {
         throw new Error('WEATHER_API_KEY IS REQUIRED')
     }
 
-     axios({
+    const responseFromAPI: AxiosResponse<IWeatherResponse, null> = await axios({
         method: 'GET',
         url: 'http://api.weatherapi.com/v1/current.json',
         params: {
@@ -19,12 +20,11 @@ export async function getWeatherByIP(req: Request, res: Response) {
             q: clientIPaddress
         }
     })
-        .then(data => {
-            return res.status(200).send(data.data)
-        })
-        .catch(error => {
-            return res.status(400).send({
-                error: error
-            })
-        })
+
+    if (responseFromAPI.status === 200) {
+        return res.status(200).send(responseFromAPI.data)
+    } else if (responseFromAPI.status > 400) {
+        return res.status(400).send('Error!')
+    }
+
 }
