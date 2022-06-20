@@ -23,9 +23,5 @@ export async function getWeatherByIP(req: Request, res: Response) {
         }
     })
 
-    if (response.status >= 400) {
-        return res.status(400).send(response.data)
-    } else if (response.status === 200) {
-        return res.status(200).send(response.data)
-    }
+    return res.status(200).send(response.data)
 }
