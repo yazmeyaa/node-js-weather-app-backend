@@ -3,7 +3,10 @@ import { Request, Response } from 'express'
 
 export async function getWeatherByIP(req: Request, res: Response) {
     const secretAPIkey = process.env.WEATHER_API_KEY
-    const clientIPaddress = req.ip
+    const clientIPaddress = req.ip.split(':')[1]
+
+    console.log(clientIPaddress, secretAPIkey)
+
     if (!secretAPIkey) {
         throw new Error('WEATHER_API_KEY IS REQUIRED')
     }
