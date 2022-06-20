@@ -14,7 +14,7 @@ export async function getWeatherByIP(req: Request, res: Response) {
         throw new Error('WEATHER_API_KEY IS REQUIRED')
     }
 
-    const response = await axios({
+    axios({
         method: 'GET',
         url: 'http://api.weatherapi.com/v1/current.json',
         params: {
@@ -22,6 +22,10 @@ export async function getWeatherByIP(req: Request, res: Response) {
             q: clientIPaddress
         }
     })
-
-    return res.status(200).send(response.data)
+    .then( data => {
+        return res.status(200).send(data.data)
+    })
+    .catch( error => {
+        return res.status(200).send(error)
+    })
 }
