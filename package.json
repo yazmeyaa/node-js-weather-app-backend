@@ -10,6 +10,7 @@
   "scripts": {
     "tsc": "tsc",
     "prepare": "npm run tsc",
+    "build": "npm run prepare",
     "start": "node build/index.js",
     "dev": "nodemon index.ts"
   },
