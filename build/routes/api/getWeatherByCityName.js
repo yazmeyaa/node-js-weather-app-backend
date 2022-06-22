@@ -11,33 +11,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const getWeatherByCityName_1 = require("./routes/api/getWeatherByCityName");
-const getWeatherByIp_1 = require("./routes/api/getWeatherByIp");
-const dotenv_1 = __importDefault(require("dotenv"));
-const cors_1 = __importDefault(require("cors"));
-dotenv_1.default.config();
-console.log(process.env.WEATHER_API_KEY);
-const app = (0, express_1.default)();
-const PORT = (_a = process.env.PORT) !== null && _a !== void 0 ? _a : 3000;
-function start() {
+exports.getWeatherByCityName = void 0;
+const axios_1 = __importDefault(require("axios"));
+function getWeatherByCityName(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            app.listen(PORT, () => {
-                console.log('Server is started at port ', PORT);
-            });
+        const secretAPIkey = process.env.WEATHER_API_KEY;
+        const { city } = req.query;
+        if (!city) {
+            return res.status(400).send({ error: 'city is required!' });
         }
-        catch (error) {
-            if (error) {
-                throw error;
+        if (!secretAPIkey) {
+            throw new Error('WEATHER_API_KEY IS REQUIRED');
+        }
+        const response = yield (0, axios_1.default)({
+            method: 'GET',
+            url: 'http://api.weatherapi.com/v1/current.json',
+            params: {
+                key: secretAPIkey,
+                q: city
             }
+        });
+        if (response.status >= 400) {
+            return res.status(400).send(response.data);
+        }
+        else if (response.status === 200) {
+            return res.status(200).send(response.data);
         }
     });
 }
-app.use(express_1.default.json());
-app.use((0, cors_1.default)());
-app.get('/api/get_weather', getWeatherByCityName_1.getWeatherByCityName);
-app.get('/api/get_weather_by_ip', getWeatherByIp_1.getWeatherByIP);
-start();
+exports.getWeatherByCityName = getWeatherByCityName;
