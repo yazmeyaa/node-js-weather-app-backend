@@ -1,4 +1,4 @@
-import express from 'express'
+import express, {Request, Response} from 'express'
 import { getWeatherByCityName } from './routes/api/getWeatherByCityName'
 import { getWeatherByIP } from './routes/api/getWeatherByIp'
 import dotenv from 'dotenv'
@@ -29,5 +29,9 @@ app.use(cors())
 
 app.get('/api/get_weather', getWeatherByCityName)
 app.get('/api/get_weather_by_ip', getWeatherByIP)
+
+app.get('/api/headers', (req: Request, res: Response) => {
+    return res.status(200).send({headers: req.headers})
+})
 
 start();
