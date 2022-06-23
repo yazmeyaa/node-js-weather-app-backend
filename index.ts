@@ -30,15 +30,5 @@ app.use(cors())
 app.get('/api/get_weather', getWeatherByCityName)
 app.get('/api/get_weather_by_ip', getWeatherByIP)
 
-app.get('/api/headers', (req: Request, res: Response) => {
-    return res.status(200).send({
-        headers: req.headers,
-        ip: {
-            reqIP: req.ip,
-            reqSocketIP: req.socket.localAddress,
-            header: req.headers['x-forwarded-for']
-        }
-    })
-})
 
 start();
