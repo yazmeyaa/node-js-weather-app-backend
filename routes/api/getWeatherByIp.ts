@@ -19,6 +19,7 @@ export async function getWeatherByIP(req: Request, res: Response) {
             method: 'GET',
             params: {
                 key: secretAPIkey,
+                lang: 'ru',
                 q: clientIPaddress
             }
         })

@@ -22,6 +22,7 @@ export async function getWeatherByCityName(req: Request<null, null, null, Reques
         url: 'http://api.weatherapi.com/v1/current.json',
         params: {
             key: secretAPIkey,
+            lang: 'ru',
             q: city
         }
     })
