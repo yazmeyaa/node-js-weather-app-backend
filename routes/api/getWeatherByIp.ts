@@ -11,6 +11,10 @@ export async function getWeatherByIP(req: Request, res: Response) {
         throw new Error('WEATHER_API_KEY IS REQUIRED')
     }
 
+    if(!clientIPaddress){
+        return res.send({error: 'IP address error'})
+    }
+
 
     try {
 
