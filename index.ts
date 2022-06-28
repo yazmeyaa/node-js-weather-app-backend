@@ -1,7 +1,7 @@
 import express, {Request, Response} from 'express'
 import { getWeatherByCityName } from './routes/api/getWeatherByCityName'
 import { getWeatherByIP } from './routes/api/getWeatherByIp'
-import { getForecast } from 'routes/api/getForecast'
+import { getForecast } from './routes/api/getForecast'
 import dotenv from 'dotenv'
 import cors from 'cors'
 
