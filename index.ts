@@ -1,6 +1,7 @@
 import express, {Request, Response} from 'express'
 import { getWeatherByCityName } from './routes/api/getWeatherByCityName'
 import { getWeatherByIP } from './routes/api/getWeatherByIp'
+import { getForecast } from 'routes/api/getForecast'
 import dotenv from 'dotenv'
 import cors from 'cors'
 
@@ -29,6 +30,7 @@ app.use(cors())
 
 app.get('/api/get_weather', getWeatherByCityName)
 app.get('/api/get_weather_by_ip', getWeatherByIP)
+app.get('/api/get_forecast', getForecast)
 
 
 start();
