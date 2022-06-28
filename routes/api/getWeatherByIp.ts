@@ -15,10 +15,7 @@ export async function getWeatherByIP(req: Request, res: Response) {
         return res.send({error: 'IP address error'})
     }
 
-
-    try {
-
-        const responseFromAPI = await axios({
+    await axios({
             url: 'http://api.weatherapi.com/v1/current.json',
             method: 'GET',
             params: {
@@ -27,20 +24,12 @@ export async function getWeatherByIP(req: Request, res: Response) {
                 q: clientIPaddress
             }
         })
-
-
-        if (responseFromAPI.status === 200) {
-            return res.status(200).send(responseFromAPI.data)
-        } else if (responseFromAPI.status > 400) {
-            return res.status(400).send({error: 'Location not found'})
-        }
-        
-    }
-
-
-    catch (error) {
-        return res.status(400).send({
-            error: error
+        .then(data => {
+            return res.status(200).send(data.data)
         })
-    }
+        .catch( _ => {
+            return res.status(400).send({
+                error: 'something wrong'
+            })
+        })
 }

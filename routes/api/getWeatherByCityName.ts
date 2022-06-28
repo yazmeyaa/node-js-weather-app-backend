@@ -17,7 +17,7 @@ export async function getWeatherByCityName(req: Request<null, null, null, Reques
         throw new Error('WEATHER_API_KEY IS REQUIRED')
     }
 
-    const response = await axios({
+    await axios({
         method: 'GET',
         url: 'http://api.weatherapi.com/v1/current.json',
         params: {
@@ -26,9 +26,13 @@ export async function getWeatherByCityName(req: Request<null, null, null, Reques
             q: city
         }
     })
-            if (response.status >= 400) {
-                return res.status(400).send(response.data)
-            } else if (response.status === 200) {
-                return res.status(200).send(response.data)
-            }
+    .then ( data => {
+        return res.status(200).send(data.data)
+    })
+    .catch( _ => {
+        return res.status(400).send({
+            error: 'Something wrong'
+        })
+    })
+   
 }
