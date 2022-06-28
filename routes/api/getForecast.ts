@@ -16,7 +16,7 @@ export async function getForecast(req: Request<{ days: number, city: string }>, 
         })
     }
 
-    const responseFromAPI = await axios({
+    axios({
         url: 'http://api.weatherapi.com/v1/forecast.json',
         method: 'GET',
         params: {
@@ -25,13 +25,13 @@ export async function getForecast(req: Request<{ days: number, city: string }>, 
             days: days
         }
     })
-
-    return res.status(200).send(responseFromAPI.data)
-
-    // if (responseFromAPI.status === 200) {
-    //     return res.status(200).send(responseFromAPI.data)
-    // } else if (responseFromAPI.status === 400) {
-    //     return res.status(400).send(responseFromAPI.data)
-    // }
+    .then( data => {
+        return res.status(200).send(data.data)
+    })
+    .catch( _ => {
+        return res.status(200).send({
+            error: 'Something wrong'
+        })
+    })
 
 }
