@@ -28,10 +28,8 @@ export async function getForecast(req: Request<{ days: number, city: string }>, 
 
     if (responseFromAPI.status === 200) {
         return res.status(200).send(responseFromAPI.data)
-    } else if (responseFromAPI.status > 400) {
-        return res.status(400).send({
-            error: 'Something wrong'
-        })
+    } else {
+        return res.status(400).send(responseFromAPI.data)
     }
 
 }
