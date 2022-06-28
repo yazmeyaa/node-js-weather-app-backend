@@ -2,8 +2,8 @@ import axios from 'axios'
 import { Request, Response } from 'express'
 import { IForecastResponse } from 'types/forecastResponse'
 
-export async function getForecast(req: Request<{ days: number }>, res: Response) {
-    const { days, city } = req.body
+export async function getForecast(req: Request<{ days: number, city: string }>, res: Response) {
+    const { days, city } = req.params
     const secretAPIkey = process.env.WEATHER_API_KEY
 
     if (!secretAPIkey) {
