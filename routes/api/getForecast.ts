@@ -16,7 +16,7 @@ export async function getForecast(req: Request<{ days: number, city: string }>, 
         })
     }
 
-    axios({
+    await axios({
         url: 'http://api.weatherapi.com/v1/forecast.json',
         method: 'GET',
         params: {
