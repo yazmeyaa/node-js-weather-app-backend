@@ -1,33 +1,56 @@
 import axios from 'axios'
 import { Request, Response } from 'express'
 
+function validateIPAddress(IP: string) {
+
+    let isAddressValid = Boolean(true)
+    const IPsegments = IP.split('.')
+
+    if (typeof IP !== 'string') {
+        console.error('Wrong IP data type.', IP)
+        return false
+    }
+
+    if (IPsegments.length !== 4) {
+        isAddressValid = false
+    }
+
+    IPsegments.forEach(item => {
+        const numToTest = parseInt(item)
+        if (numToTest < 0 || numToTest > 255 || NaN === numToTest) {
+            isAddressValid = false
+        }
+    })
+
+    return isAddressValid
+}
+
 export async function getWeatherByIP(req: Request, res: Response) {
 
     const secretAPIkey = process.env.WEATHER_API_KEY
-    const clientIPaddress = req.headers['x-forwarded-for']
+    const clientIPaddress = req.ip
 
+    if(validateIPAddress(clientIPaddress) === false){
+        return res.status(400).send({error: 'wrong ip address recieved'})
+    }
 
     if (!secretAPIkey) {
         throw new Error('WEATHER_API_KEY IS REQUIRED')
     }
 
-    if(!clientIPaddress){
-        return res.send({error: 'IP address error'})
-    }
-
     await axios({
-            url: 'http://api.weatherapi.com/v1/current.json',
-            method: 'GET',
-            params: {
-                key: secretAPIkey,
-                lang: 'ru',
-                q: clientIPaddress
-            }
-        })
+        url: 'http://api.weatherapi.com/v1/current.json',
+        method: 'GET',
+        params: {
+            key: secretAPIkey,
+            lang: 'ru',
+            q: clientIPaddress
+        }
+    })
         .then(data => {
             return res.status(200).send(data.data)
         })
-        .catch( _ => {
+        .catch(_ => {
             return res.status(400).send({
                 error: 'something wrong'
             })
