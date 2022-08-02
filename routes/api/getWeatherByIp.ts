@@ -4,12 +4,12 @@ import { Request, Response } from 'express'
 function validateIPAddress(IP: string) {
 
     let isAddressValid = Boolean(true)
-    const IPsegments = IP.split('.')
 
     if (typeof IP !== 'string') {
         console.error('Wrong IP data type.', IP)
         return false
     }
+    const IPsegments = IP.split('.')
 
     if (IPsegments.length !== 4) {
         isAddressValid = false
@@ -17,7 +17,7 @@ function validateIPAddress(IP: string) {
 
     IPsegments.forEach(item => {
         const numToTest = parseInt(item)
-        if (numToTest < 0 || numToTest > 255 || NaN === numToTest) {
+        if (numToTest < 0 || numToTest > 255 || isNaN(numToTest)) {
             isAddressValid = false
         }
     })
