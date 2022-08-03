@@ -28,7 +28,7 @@ function validateIPAddress(IP: string) {
 export async function getWeatherByIP(req: Request, res: Response) {
 
     const secretAPIkey = process.env.WEATHER_API_KEY
-    const clientIPaddress = req.ip
+    const clientIPaddress = validateIPAddress(req.ip) === true ? req.ip : req.headers['x-forwarded-for'] as string
 
     if (validateIPAddress(clientIPaddress) === false) {
         console.error(addPrefix('wrong ip address recieved'), clientIPaddress)
