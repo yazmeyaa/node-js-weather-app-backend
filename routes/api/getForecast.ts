@@ -1,13 +1,15 @@
 import axios from 'axios'
 import { Request, Response } from 'express'
-import { IForecastResponse } from 'types/forecastResponse'
+import addPrefix from '../../utils/addPrefixToLog'
 
 export async function getForecast(req: Request<{ days: number, city: string }>, res: Response) {
     const { days, city } = req.query
     const secretAPIkey = process.env.WEATHER_API_KEY
 
     if (!secretAPIkey) {
-        throw new Error('WEATHER_API_KEY IS REQUIRED')
+        const errorMessage = 'WEATHER_API_KEY IS REQUIRED'
+        console.error(addPrefix(errorMessage))
+        throw new Error(errorMessage)
     }
 
     if (!days || !city) {

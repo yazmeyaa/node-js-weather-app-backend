@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Request, Response } from 'express'
+import addPrefix from 'utils/addPrefixToLog'
 
 interface RequestParams {
     city: string
@@ -10,10 +11,12 @@ export async function getWeatherByCityName(req: Request<null, null, null, Reques
     const { city } = req.query
 
     if (!city) {
+        console.error(addPrefix('city is required'))
         return res.status(400).send({ error: 'city is required!' })
     }
 
     if (!secretAPIkey) {
+        console.error(addPrefix('WEATHER_API_KEY IS REQUIRED'))
         throw new Error('WEATHER_API_KEY IS REQUIRED')
     }
 
@@ -29,10 +32,14 @@ export async function getWeatherByCityName(req: Request<null, null, null, Reques
     .then ( data => {
         return res.status(200).send(data.data)
     })
-    .catch( _ => {
-        return res.status(400).send({
-            error: 'Something wrong'
-        })
+    .catch(responseError => {
+        if (axios.isAxiosError(responseError)) {
+            console.error(addPrefix(responseError.message))
+            return res.status(400).send({
+                error: 'something wrong',
+                errorMessage: responseError.message
+            })
+        }
     })
    
 }
