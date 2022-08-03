@@ -13,6 +13,7 @@ export async function getForecast(req: Request<{ days: number, city: string }>, 
     }
 
     if (!days || !city) {
+        console.error(addPrefix('missing required params'), city, days)
         return res.status(400).send({
             error: 'missing required params'
         })

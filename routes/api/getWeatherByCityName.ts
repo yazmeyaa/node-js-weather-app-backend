@@ -11,7 +11,7 @@ export async function getWeatherByCityName(req: Request<null, null, null, Reques
     const { city } = req.query
 
     if (!city) {
-        console.error(addPrefix('city is required'))
+        console.error(addPrefix('city is required'), city)
         return res.status(400).send({ error: 'city is required!' })
     }
 
