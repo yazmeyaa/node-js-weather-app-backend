@@ -1,12 +1,13 @@
+function normalizeString(number: number) {
+    return number < 10 ? '0' + number : number
+}
+
 function debug(message: string) {
     const currentDate = new Date()
-    const day = currentDate.getDay()
-    const month = currentDate.getMonth()
-    const year = currentDate.getFullYear()
-    const hours = currentDate.getHours()
-    const minutes = currentDate.getMinutes()
+    const hours = normalizeString(currentDate.getHours())
+    const minutes = normalizeString(currentDate.getMinutes())
 
-    console.log( `${day}.${month}.${year} ${hours}:${minutes} => ${message}`)
+    console.log( `${hours}:${minutes} @_> ${message}`)
 }
 
 export default debug
