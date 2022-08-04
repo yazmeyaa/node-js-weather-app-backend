@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Request, Response } from 'express'
-import addPrefix from '../../utils/addPrefixToLog'
+import debug from '../../utils/addPrefixToLog'
 
 function validateIPAddress(IP: string) {
     let isAddressValid = Boolean(true)
@@ -31,12 +31,12 @@ export async function getWeatherByIP(req: Request, res: Response) {
     const clientIPaddress = validateIPAddress(req.ip) === true ? req.ip : req.headers['x-forwarded-for'] as string
 
     if (validateIPAddress(clientIPaddress) === false) {
-        console.error(addPrefix('wrong ip address recieved'), clientIPaddress)
+        debug(`wrong ip address recieved ${clientIPaddress}`)
         return res.status(400).send({ error: 'wrong ip address recieved' })
     }
 
     if (!secretAPIkey) {
-        console.error(addPrefix('WEATHER_API_KEY IS REQUIRED'))
+        debug('WEATHER_API_KEY IS REQUIRED')
         throw new Error('WEATHER_API_KEY IS REQUIRED')
     }
 
@@ -54,7 +54,7 @@ export async function getWeatherByIP(req: Request, res: Response) {
         })
         .catch(responseError => {
             if (axios.isAxiosError(responseError)) {
-                console.error(addPrefix(responseError.message))
+                debug(responseError.message)
                 return res.status(400).send({
                     error: 'something wrong',
                     errorMessage: responseError.message

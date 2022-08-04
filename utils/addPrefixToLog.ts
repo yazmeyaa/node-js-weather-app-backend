@@ -1,4 +1,4 @@
-function addPrefix(message: string) {
+function debug(message: string) {
     const currentDate = new Date()
     const day = currentDate.getDay()
     const month = currentDate.getMonth()
@@ -6,7 +6,7 @@ function addPrefix(message: string) {
     const hours = currentDate.getHours()
     const minutes = currentDate.getMinutes()
 
-    return `${day}.${month}.${year} ${hours}:${minutes} => ${message}`
+    console.log( `${day}.${month}.${year} ${hours}:${minutes} => ${message}`)
 }
 
-export default addPrefix
+export default debug
